@@ -4,6 +4,7 @@ from config.db import get_connection
 from services.transaction_service import insert_transactions
 from importers.pcfinancial import PCFinancialImporter
 from utils.logger import get_logger
+from services.transaction_type_service import load_transaction_types
 
 logger = get_logger("app")
 
@@ -32,10 +33,12 @@ def main():
         logger.error(f"Unknown importer: {importer_name}")
         sys.exit(1)
 
-    importer = importer_class()
+    connection = get_connection()
+    transaction_types_map = load_transaction_types(connection)
+
+    importer = importer_class(transaction_types_map)
     transactions = importer.parse(file_path)
 
-    connection = get_connection()
     insert_transactions(connection, transactions)
 
     logger.info(f"Imported {len(transactions)} transactions")
