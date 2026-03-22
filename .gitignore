@@ -1,2 +1,74 @@
-node_modules
+# ----------------------
+# Python
+# ----------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# ----------------------
+# Virtual Environment
+# ----------------------
+venv/
+.env/
+
+# ----------------------
+# Environment Variables
+# ----------------------
 .env
+
+# ----------------------
+# Distribution / Packaging
+# ----------------------
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ----------------------
+# Logs
+# ----------------------
+*.log
+
+# ----------------------
+# IDE / Editor
+# ----------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# ----------------------
+# Jupyter Notebooks
+# ----------------------
+.ipynb_checkpoints/
+
+# ----------------------
+# OS Files
+# ----------------------
+Thumbs.db
+
+# ----------------------
+# Data files (IMPORTANT)
+# ----------------------
+data/
+*.csv
+
+# If you want to keep sample files, comment the above and use:
+# data/*
+# !data/sample.csv
+
+# ----------------------
+# Testing / Coverage
+# ----------------------
+.coverage
+htmlcov/
+.pytest_cache/
+
+# ----------------------
+# Misc
+# ----------------------
+*.sqlite3
