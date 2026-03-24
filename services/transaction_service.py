@@ -1,6 +1,6 @@
 from core.fingerprint import generate
 
-def insert_transactions(connection, transactions):
+def insert_transactions(connection, transactions, account_id):
     cursor = connection.cursor()
 
     values = []
@@ -8,7 +8,7 @@ def insert_transactions(connection, transactions):
         fingerprint = generate(t)
 
         values.append((
-            1,
+            account_id,
             t["type"],
             t["datetime"],
             t["amount"],

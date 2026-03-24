@@ -1,6 +1,9 @@
 mysql-connector-python==9.6.0
 numpy==2.4.3
+packaging==26.0
 pandas==3.0.1
+pillow==12.1.1
+pytesseract==0.3.13
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.2
 six==1.17.0
