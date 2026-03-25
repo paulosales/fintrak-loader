@@ -1,4 +1,7 @@
-def insert_sub_transactions(connection, transaction_id, sub_transactions):
+from config.db import get_connection
+
+def insert_sub_transactions(transaction_id, sub_transactions):
+    connection = get_connection()
     cursor = connection.cursor()
 
     values = []
@@ -6,7 +9,7 @@ def insert_sub_transactions(connection, transaction_id, sub_transactions):
     for t in sub_transactions:
         values.append((
             transaction_id,
-            t["product_code"],
+            '',
             t["amount"],
             t["description"],
             None
