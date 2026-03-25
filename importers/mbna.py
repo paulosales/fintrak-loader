@@ -1,6 +1,7 @@
 import pandas as pd
 from core.importer import Importer
-from utils.date_utils import parse_datetime  # reuse your existing function
+from utils.date_utils import parse_datetime
+from services.account_service import get_account_id_cached
 
 class MBNACardImporter(Importer):
 
@@ -25,6 +26,7 @@ class MBNACardImporter(Importer):
                 type_code = self._map_type(description, amount)
 
                 transactions.append({
+                    "accountId": get_account_id_cached("MBNA"),
                     "datetime": datetime,
                     "amount": amount,
                     "description": description,

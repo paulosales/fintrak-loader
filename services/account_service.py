@@ -1,15 +1,24 @@
-def get_account_id_by_code(connection, code: str) -> int:
-    cursor = connection.cursor()
+from config.db import get_connection
+from typing import Dict, Any, cast
 
-    cursor.execute(
-        "SELECT id FROM accounts WHERE code = %s",
-        (code,)
-    )
+_account_cache = {}
 
-    result = cursor.fetchone()
+def get_account_id_cached(code: str):
+
+    connection = get_connection()
+    
+    if code in _account_cache:
+        return _account_cache[code]
+
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT id FROM accounts WHERE code = %s", (code,))
+    result = cast(Dict[str, Any], cursor.fetchone())
     cursor.close()
 
     if not result:
-        raise ValueError(f"Account not found for code: {code}")
+        raise ValueError(f"Account not found: {code}")
+    
+    account_id = result["id"] 
 
-    return result[0]
+    _account_cache[code] = account_id
+    return account_id

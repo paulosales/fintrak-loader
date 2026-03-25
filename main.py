@@ -1,13 +1,12 @@
 import sys
 import os
-from config.db import get_connection
 from services.transaction_service import insert_transactions
 from importers.pcfinancial import PCFinancialImporter
 from importers.mbna import MBNACardImporter
+from importers.rbc import RBCImporter
 from importers.receipt_ocr import ReceiptOCRImporter
 from utils.logger import get_logger
 from services.transaction_type_service import load_transaction_types
-from services.account_service import get_account_id_by_code
 
 logger = get_logger("app")
 from importers.receipt_ocr import ReceiptOCRImporter
@@ -16,12 +15,8 @@ from services.sub_transaction_service import insert_sub_transactions
 IMPORTERS = {
     "pcfinancial": PCFinancialImporter,
     "mbna": MBNACardImporter,
-    "receipt": ReceiptOCRImporter
-}
-
-ACCOUNT_CODES = {
-    "pcfinancial": "PCFINANCIAL",
-    "mbna": "MBNA"
+    "receipt": ReceiptOCRImporter,
+    "rbc": RBCImporter
 }
 
 def main():
@@ -37,8 +32,6 @@ def main():
     if not os.path.exists(file_path):
         logger.error(f"File not found: {file_path}")
         sys.exit(1)
-
-    connection = get_connection()
 
     if importer_name == "receipt":
         if len(sys.argv) < 4:
@@ -63,14 +56,12 @@ def main():
             logger.error(f"Unknown importer: {importer_name}")
             sys.exit(1)
 
-        type_map = load_transaction_types(connection)
+        type_map = load_transaction_types()
 
         importer = importer_class(type_map)
         transactions = importer.parse(file_path)
 
-        account_id = get_account_id_by_code(connection, ACCOUNT_CODES.get(importer_name, ""))
-
-        insert_transactions(connection, transactions, account_id)
+        insert_transactions(transactions)
 
         logger.info(f"Imported {len(transactions)} transactions")
 

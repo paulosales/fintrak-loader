@@ -1,6 +1,8 @@
 from core.fingerprint import generate
+from config.db import get_connection
 
-def insert_transactions(connection, transactions, account_id):
+def insert_transactions(transactions):
+    connection = get_connection()
     cursor = connection.cursor()
 
     values = []
@@ -8,7 +10,7 @@ def insert_transactions(connection, transactions, account_id):
         fingerprint = generate(t)
 
         values.append((
-            account_id,
+            t["accountId"],
             t["type"],
             t["datetime"],
             t["amount"],
@@ -25,6 +27,7 @@ def insert_transactions(connection, transactions, account_id):
     (account_id, transaction_type_id, datetime, amount, description, note, fingerprint)
     VALUES {placeholders}
     """
+
 
     cursor.execute(query, flattened)
     connection.commit()

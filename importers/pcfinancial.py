@@ -1,6 +1,7 @@
 import pandas as pd
 from core.importer import Importer as BaseImporter
 from utils.date_utils import parse_datetime
+from services.account_service import get_account_id_cached
 
 class PCFinancialImporter(BaseImporter):
 
@@ -15,6 +16,7 @@ class PCFinancialImporter(BaseImporter):
         for _, row in df.iterrows():
             transaction_type_code = row["Type"].strip().upper()
             transactions.append({
+                "accountId": get_account_id_cached("PCFINANCIAL"),
                 "datetime": parse_datetime(row["Date"], row["Time"]),
                 "amount": float(row["Amount"]),
                 "description": row["Description"],
