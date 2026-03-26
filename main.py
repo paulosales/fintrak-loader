@@ -42,12 +42,10 @@ def main():
 
         # importer = ReceiptOCRImporter()
         # sub_transactions = importer.parse(file_path)
+        # print(sub_transactions)
 
         sub_transactions = []
-
-
-        print(sub_transactions)
-
+ 
         insert_sub_transactions(transaction_id, sub_transactions)
         logger.info(f"Inserted {len(sub_transactions)} sub-transactions")
 
