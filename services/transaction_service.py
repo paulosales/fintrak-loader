@@ -1,5 +1,6 @@
 from core.fingerprint import generate
 from config.db import get_connection
+from typing import Optional, Dict, Any, cast
 
 def insert_transactions(transactions):
     connection = get_connection()
@@ -31,3 +32,19 @@ def insert_transactions(transactions):
 
     cursor.execute(query, flattened)
     connection.commit()
+
+def get_transaction_by_id(transaction_id: int) -> Optional[Dict[str, Any]]:
+    connection = get_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    query = """
+    SELECT id, account_id, transaction_type_id, datetime, amount, description, note, fingerprint
+    FROM transactions
+    WHERE id = %s
+    """
+
+    cursor.execute(query, (transaction_id,))
+    result = cursor.fetchone()
+    cursor.close()
+
+    return cast(Optional[Dict[str, Any]], result)
