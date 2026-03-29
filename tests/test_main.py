@@ -1,9 +1,7 @@
 import pytest
 import sys
-from io import StringIO
 from unittest.mock import patch, MagicMock
 
-# Mock the problematic module before importing main
 mock_receipt_ocr = MagicMock()
 sys.modules['importers.receipt_ocr'] = mock_receipt_ocr
 
@@ -27,6 +25,8 @@ class TestMainCLI:
             calls = [call[0][0] for call in mock_logger.info.call_args_list]
             assert any("Usage:" in call for call in calls)
             assert any("fingerprint" in call for call in calls)
+            assert any("receipt" in call for call in calls)
+            assert any("<importer>" in call for call in calls)
 
     @patch('main.logger')
     def test_main_fingerprint_command_missing_id(self, mock_logger, capsys):
