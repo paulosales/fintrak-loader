@@ -1,12 +1,14 @@
 import sys
 import os
-from services.transaction_service import insert_transactions
+from services.transaction_service import insert_transactions, get_transaction_by_id
 from importers.pcfinancial import PCFinancialImporter
 from importers.mbna import MBNACardImporter
 from importers.rbc import RBCImporter
 from importers.receipt_ocr import ReceiptOCRImporter
 from utils.logger import get_logger
 from services.transaction_type_service import load_transaction_types
+from core.fingerprint import generate
+from typing import Dict, Any
 
 logger = get_logger("app")
 from importers.receipt_ocr import ReceiptOCRImporter
@@ -20,6 +22,46 @@ IMPORTERS = {
 }
 
 def main():
+    if len(sys.argv) < 2:
+        logger.info("Usage:")
+        logger.info("Import transactions: python main.py <importer> <file>")
+        logger.info("Import receipts: python main.py receipt <image> <transaction_id>")
+        logger.info("Calculate fingerprint: python main.py fingerprint <transaction_id>")
+        sys.exit(1)
+
+    command = sys.argv[1]
+
+    if command == "fingerprint":
+        if len(sys.argv) < 3:
+            logger.error("transaction_id is required for fingerprint calculation")
+            sys.exit(1)
+
+        try:
+            transaction_id = int(sys.argv[2])
+        except ValueError:
+            logger.error("transaction_id must be a valid integer")
+            sys.exit(1)
+
+        transaction = get_transaction_by_id(transaction_id)
+        if not transaction:
+            logger.error(f"Transaction with id {transaction_id} not found")
+            sys.exit(1)
+
+        # Type assertion for Pylance
+        transaction_dict: Dict[str, Any] = transaction
+
+        # Calculate fingerprint
+        fingerprint_data = {
+            'datetime': str(transaction_dict['datetime']),
+            'amount': str(transaction_dict['amount']),
+            'description': transaction_dict['description']
+        }
+        fingerprint = generate(fingerprint_data)
+
+        print(fingerprint)
+        return
+
+    # Handle import commands
     if len(sys.argv) < 3:
         logger.info("Usage:")
         logger.info("Transactions: python main.py pcfinancial <file>")
