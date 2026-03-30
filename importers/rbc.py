@@ -24,8 +24,7 @@ class RBCImporter(Importer):
             "description_1",
             "description_2",
             "cad",
-            "usd",
-            "extra"
+            "usd"
         ]
         df = pd.read_csv(file_path, names=columns, header=0, engine="python")
 
