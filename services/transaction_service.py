@@ -3,6 +3,9 @@ from config.db import get_connection
 from typing import Optional, Dict, Any, cast
 
 def insert_transactions(transactions):
+    if not transactions:
+        return
+
     connection = get_connection()
     cursor = connection.cursor()
 

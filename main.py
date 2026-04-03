@@ -7,6 +7,8 @@ from importers.rbc import RBCImporter
 from importers.receipt_ocr import ReceiptOCRImporter
 from importers.bb import BBImporter
 from importers.nu import NUImporter
+from importers.cibic_checking import CIBICCheckingImporter
+from importers.cibic_savings import CIBICSavingsImporter
 from utils.logger import get_logger
 from services.transaction_type_service import load_transaction_types
 from core.fingerprint import generate
@@ -22,7 +24,9 @@ IMPORTERS = {
     "receipt": ReceiptOCRImporter,
     "rbc": RBCImporter,
     "bb": BBImporter,
-    "nu": NUImporter
+    "nu": NUImporter,
+    "cibic-checking": CIBICCheckingImporter,
+    "cibic-savings": CIBICSavingsImporter
 }
 
 def main():
@@ -68,7 +72,7 @@ def main():
     # Handle import commands
     if len(sys.argv) < 3:
         logger.info("Usage:")
-        logger.info("Transactions: python main.py pcfinancial|mbna|rbc|bb|nu <file>")
+        logger.info("Transactions: python main.py pcfinancial|mbna|rbc|bb|nu|cibic-checking|cibic-savings <file>")
         logger.info("Receipts: python main.py receipt <image> <transaction_id>")
         sys.exit(1)
 
@@ -107,9 +111,11 @@ def main():
         importer = importer_class(type_map)
         transactions = importer.parse(file_path)
 
-        insert_transactions(transactions)
-
-        logger.info(f"Imported {len(transactions)} transactions")
+        if transactions:
+            insert_transactions(transactions)
+            logger.info(f"Imported {len(transactions)} transactions")
+        else:
+            logger.info("No transactions found to import")
 
 if __name__ == "__main__":
     main()

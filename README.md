@@ -18,6 +18,26 @@ Importing RBC transaction files:
 python main.py rbc report.csv
 ```
 
+Importing Banco do Brasil (BB) transaction files:
+```bash
+python main.py bb report.csv
+```
+
+Importing Nubank (NU) transaction files:
+```bash
+python main.py nu report.csv
+```
+
+Importing CIBIC Checking account transaction files:
+```bash
+python main.py cibic-checking report.csv
+```
+
+Importing CIBIC Savings account transaction files:
+```bash
+python main.py cibic-savings report.csv
+```
+
 ### Import Receipts
 Import receipt images with OCR:
 ```bash
@@ -70,6 +90,18 @@ python -m pytest tests/test_logger.py -v
 
 # Test PC Financial importer
 python -m pytest tests/test_pcfinancial_importer.py -v
+
+# Test BB importer
+python -m pytest tests/test_bb_importer.py -v
+
+# Test NU importer
+python -m pytest tests/test_nu_importer.py -v
+
+# Test CIBIC Checking importer
+python -m pytest tests/test_cibic_checking_importer.py -v
+
+# Test CIBIC Savings importer
+python -m pytest tests/test_cibic_savings_importer.py -v
 ```
 
 ### Test Coverage
@@ -78,6 +110,6 @@ The test suite covers:
 - **Database operations** - Transaction service CRUD operations with error handling
 - **CLI functionality** - Command-line argument parsing and execution
 - **Logging utilities** - Logger configuration and usage
-- **Data importers** - PC Financial transaction file parsing
+- **Data importers** - PC Financial, BB, NU, CIBIC Checking, and CIBIC Savings transaction file parsing
 
 All tests use mocked dependencies to avoid requiring actual database connections or external libraries during testing.

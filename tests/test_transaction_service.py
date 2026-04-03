@@ -50,9 +50,9 @@ class TestTransactionService:
 
         insert_transactions([])
 
-        # The code still executes even with empty list (creates empty placeholders)
-        mock_cursor.execute.assert_called_once()
-        mock_conn.commit.assert_called_once()
+        # With empty list, no database operations should occur
+        mock_cursor.execute.assert_not_called()
+        mock_conn.commit.assert_not_called()
 
     @patch('services.transaction_service.get_connection')
     def test_get_transaction_by_id_found(self, mock_get_connection, mock_db_connection, sample_transaction):
