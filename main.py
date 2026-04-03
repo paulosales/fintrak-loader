@@ -5,6 +5,8 @@ from importers.pcfinancial import PCFinancialImporter
 from importers.mbna import MBNACardImporter
 from importers.rbc import RBCImporter
 from importers.receipt_ocr import ReceiptOCRImporter
+from importers.bb import BBImporter
+from importers.nu import NUImporter
 from utils.logger import get_logger
 from services.transaction_type_service import load_transaction_types
 from core.fingerprint import generate
@@ -18,7 +20,9 @@ IMPORTERS = {
     "pcfinancial": PCFinancialImporter,
     "mbna": MBNACardImporter,
     "receipt": ReceiptOCRImporter,
-    "rbc": RBCImporter
+    "rbc": RBCImporter,
+    "bb": BBImporter,
+    "nu": NUImporter
 }
 
 def main():
@@ -64,7 +68,7 @@ def main():
     # Handle import commands
     if len(sys.argv) < 3:
         logger.info("Usage:")
-        logger.info("Transactions: python main.py pcfinancial <file>")
+        logger.info("Transactions: python main.py pcfinancial|mbna|rbc|bb|nu <file>")
         logger.info("Receipts: python main.py receipt <image> <transaction_id>")
         sys.exit(1)
 
