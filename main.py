@@ -9,6 +9,7 @@ from importers.bb import BBImporter
 from importers.nu import NUImporter
 from importers.cibic_checking import CIBICCheckingImporter
 from importers.cibic_savings import CIBICSavingsImporter
+from importers.c6_checking import C6CheckingImporter
 from utils.logger import get_logger
 from services.transaction_type_service import load_transaction_types
 from core.fingerprint import generate
@@ -26,7 +27,8 @@ IMPORTERS = {
     "bb": BBImporter,
     "nu": NUImporter,
     "cibic-checking": CIBICCheckingImporter,
-    "cibic-savings": CIBICSavingsImporter
+    "cibic-savings": CIBICSavingsImporter,
+    "c6-checking": C6CheckingImporter
 }
 
 def main():
