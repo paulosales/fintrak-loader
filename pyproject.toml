@@ -1,0 +1,46 @@
+[project]
+name = "data-loader"
+version = "1.0.0"
+description = "Loads transaction data from various sources for testing and development purposes."
+requires-python = ">=3.12"
+
+dependencies = [
+    "coverage==7.13.5",
+    "iniconfig==2.3.0",
+    "mysql-connector-python==9.7.0",
+    "numpy==2.4.4",
+    "packaging==26.0",
+    "pandas==3.0.2",
+    "pillow==12.2.0",
+    "pluggy==1.6.0",
+    "Pygments==2.19.2",
+    "pytesseract==0.3.13",
+    "python-dateutil==2.9.0.post0",
+    "python-dotenv==1.2.2",
+    "six==1.17.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest==9.0.3",
+    "pytest-asyncio==1.3.0",
+    "pytest-cov==7.1.0",
+    "pytest-mock==3.15.1",
+    "httpx==0.28.1",
+    "ruff==0.15.12",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
